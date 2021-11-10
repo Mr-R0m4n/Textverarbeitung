@@ -9,7 +9,6 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-/ownLib
 
 # External tool builders
 .externalToolBuilders/

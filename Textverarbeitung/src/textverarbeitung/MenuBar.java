@@ -61,7 +61,9 @@ public class MenuBar {
 		
 		dateiMenue.add(dateiNeu);
 		dateiMenue.add(dateiOeffnen);
+		dateiMenue.addSeparator();
 		dateiMenue.add(dateiSpeichern);
+		dateiMenue.addSeparator();
 		dateiMenue.add(dateiBeenden);
 		
 		menue.add(dateiMenue);
@@ -85,7 +87,7 @@ public class MenuBar {
 	}
 	
 	public void dateiBeenden() {
-		if(JOptionPane.showConfirmDialog(null, "Wollen Sie wirklich das Programm Beenden?", "Programm Beenden", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+		if(JOptionPane.showConfirmDialog(null, "Sind Sie sicher?", "Anwendung schlieﬂen", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
 		System.exit(0);
 	}
 	

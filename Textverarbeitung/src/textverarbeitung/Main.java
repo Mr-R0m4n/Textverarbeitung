@@ -6,7 +6,7 @@ public class Main {
 		
 		Editor editor = new Editor();
 		MenuBar menuBar = new MenuBar(editor);
-		GUI programm = new GUI("Text-Editor", menuBar, editor);
+		new GUI("Text-Editor", menuBar, editor);
 		
 	}
 

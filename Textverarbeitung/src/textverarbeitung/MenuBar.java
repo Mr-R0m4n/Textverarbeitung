@@ -3,17 +3,23 @@ package textverarbeitung;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.io.File;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileFilter;
 
-public class MenuBar {
+import textverarbeitung.Dialoge.Filter;
+
+public class MenuBar{
 	
 	private Editor editorReferenz;
+	private Dialoge dialogeReferenz;
 
 	private JMenuBar menue = new JMenuBar();
 	private JMenu dateiMenue;
@@ -34,8 +40,9 @@ public class MenuBar {
 		}
 	}	
 	
-	public MenuBar(Editor editorReferenz) {
+	public MenuBar(Editor editorReferenz, Dialoge dialogeReferenz) {
 		this.editorReferenz = editorReferenz;
+		this.dialogeReferenz = dialogeReferenz;
 		MeinListener listener = new MeinListener();
 		dateiMenue = new JMenu("Datei");
 		
@@ -79,16 +86,18 @@ public class MenuBar {
 	}
 	
 	public void dateiOeffnen() {
-		System.out.println("Datei wird geöffnet");
+		this.dialogeReferenz.oeffnenDialog();
 	}
+
 	
 	public void dateiSpeichern() {
-		System.out.println("Datei wird gespeichert");
+		this.dialogeReferenz.speichernDialog();
 	}
 	
 	public void dateiBeenden() {
 		if(JOptionPane.showConfirmDialog(null, "Sind Sie sicher?", "Anwendung schließen", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
 		System.exit(0);
 	}
+
 	
 }

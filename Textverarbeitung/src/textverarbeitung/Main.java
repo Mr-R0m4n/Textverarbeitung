@@ -6,7 +6,7 @@ public class Main {
 		
 		Editor editor = new Editor();
 		Dialoge dialoge = new Dialoge();
-		MenuBar menuBar = new MenuBar(editor, dialoge);
+		Menu menuBar = new Menu(editor, dialoge);
 		new GUI("Text-Editor", menuBar, editor);
 		
 	}

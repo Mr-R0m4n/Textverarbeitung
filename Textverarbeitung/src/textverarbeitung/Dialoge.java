@@ -3,6 +3,7 @@ package textverarbeitung;
 import java.io.File;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 public class Dialoge {
@@ -44,6 +45,10 @@ public class Dialoge {
 			return speichernDialog.getSelectedFile();
 		else
 			return null;
+	}
+	
+	public int beendenDialog() {
+		return JOptionPane.showConfirmDialog(null, "Sind Sie sicher?", "Anwendung schlieﬂen", JOptionPane.YES_NO_OPTION);
 	}
 
 }

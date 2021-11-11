@@ -139,7 +139,7 @@ public class Menu{
 	}
 	
 	public void dateiBeenden() {
-		if(JOptionPane.showConfirmDialog(null, "Sind Sie sicher?", "Anwendung schlieﬂen", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+		if(this.dialogeReferenz.beendenDialog() == JOptionPane.YES_OPTION)
 		System.exit(0);
 	}
 	

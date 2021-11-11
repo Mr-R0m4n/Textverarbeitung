@@ -8,7 +8,6 @@ import javax.swing.filechooser.FileFilter;
 public class Dialoge {
 	
 	class Filter extends FileFilter{
-
 		@Override
 		public String getDescription() {
 			return "Textdateien";

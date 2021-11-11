@@ -23,7 +23,6 @@ public class Menu{
 	private Dialoge dialogeReferenz;
 
 	class MeinListener implements ActionListener{
-		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("neu"))
@@ -127,7 +126,6 @@ public class Menu{
 			}
 		}
 	}
-
 	
 	public void dateiSpeichern() {
 		File datei = this.dialogeReferenz.speichernDialog();
@@ -144,6 +142,5 @@ public class Menu{
 		if(JOptionPane.showConfirmDialog(null, "Sind Sie sicher?", "Anwendung schlieﬂen", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
 		System.exit(0);
 	}
-
 	
 }

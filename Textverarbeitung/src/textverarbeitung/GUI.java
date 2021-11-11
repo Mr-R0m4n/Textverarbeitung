@@ -19,7 +19,7 @@ public class GUI extends JFrame{
 		setLayout(new BorderLayout());
 		
 		setJMenuBar(this.menuReferenz.menueLeiste());
-		add(menuReferenz.symbolleiste(), BorderLayout.NORTH);
+		add(this.menuReferenz.symbolleiste(), BorderLayout.NORTH);
 		add(this.editorReferenz.getContainer(), BorderLayout.CENTER);
 
 		setExtendedState(MAXIMIZED_BOTH);

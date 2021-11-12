@@ -11,7 +11,7 @@ public class Dialoge {
 	class Filter extends FileFilter{
 		@Override
 		public String getDescription() {
-			return "Textdateien";
+			return "HTML-Dateien";
 		}
 
 		@Override
@@ -19,7 +19,9 @@ public class Dialoge {
 			String nameString = f.getName().toLowerCase();
 			if (f.isDirectory())
 				return true;
-			if (nameString.endsWith(".txt"))
+			if (nameString.endsWith(".htm"))
+				return true;
+			if (nameString.endsWith(".html"))
 				return true;
 			return false;
 		}

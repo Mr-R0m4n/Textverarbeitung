@@ -27,6 +27,8 @@ public class GUI extends JFrame{
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		editorReferenz.getEingabeFeld().requestFocus();
+		
 		setVisible(true);
 		
 	}

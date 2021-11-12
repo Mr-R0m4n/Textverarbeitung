@@ -1,19 +1,16 @@
 package textverarbeitung;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
@@ -24,7 +21,17 @@ public class Menu{
 	private Editor editorReferenz;
 	private Dialoge dialogeReferenz;
 
-	class MeinListener implements ActionListener{
+	public class ActionObjekt extends AbstractAction{
+		
+		private static final long serialVersionUID = 599695903271286671L;
+
+		public ActionObjekt(String text, ImageIcon icon, String bildschirmTipp, KeyStroke shortcut, String actionText) {
+			super(text, icon);
+			putValue(SHORT_DESCRIPTION, bildschirmTipp);
+			putValue(ACCELERATOR_KEY, shortcut);
+			putValue(ACTION_COMMAND_KEY, actionText);
+		}
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("neu"))
@@ -36,7 +43,7 @@ public class Menu{
 			if (e.getActionCommand().equals("beenden"))
 				dateiBeenden();
 		}
-	}	
+	}
 	
 	public Menu(Editor editorReferenz, Dialoge dialogeReferenz) {
 		this.editorReferenz = editorReferenz;
@@ -46,37 +53,18 @@ public class Menu{
 	public JMenuBar menueLeiste() {
 		JMenuBar menue = new JMenuBar();
 		JMenu dateiMenue;
-		JMenuItem dateiNeu, dateiOeffnen, dateiSpeichern, dateiBeenden;
-		
-		MeinListener listener = new MeinListener();
+
 		dateiMenue = new JMenu("Datei");
 		
-		dateiNeu = new JMenuItem("Neu", new ImageIcon("icons/new24.gif"));
-		dateiNeu.setAccelerator(KeyStroke.getKeyStroke('N', InputEvent.CTRL_DOWN_MASK));
-		dateiNeu.setActionCommand("neu");
-		dateiNeu.addActionListener(listener);
+		ActionObjekt neuAct = new ActionObjekt("Neu", new ImageIcon("icons/new24.gif"), "Erstellt ein neues Dokument", KeyStroke.getKeyStroke('N'), "neu");
+		ActionObjekt oeffnenAct = new ActionObjekt("Öffnen", new ImageIcon("icons/open24.gif"), "Öffnet ein vorhandenes Dokument", KeyStroke.getKeyStroke('O'), "laden");
+		ActionObjekt speichernAct = new ActionObjekt("Speichern", new ImageIcon("icons/save24.gif"), "Speichert das aktuelle Dokument", KeyStroke.getKeyStroke('S'), "speichern");
+		ActionObjekt beendenAct = new ActionObjekt("Beenden", new ImageIcon(), "Beendet das Programm", KeyStroke.getKeyStroke('B'), "beenden");
 		
-		dateiOeffnen = new JMenuItem("Öffnen", new ImageIcon("icons/open24.gif"));
-		dateiOeffnen.setAccelerator(KeyStroke.getKeyStroke('O', InputEvent.CTRL_DOWN_MASK));
-		dateiOeffnen.setActionCommand("laden");
-		dateiOeffnen.addActionListener(listener);
-		
-		dateiSpeichern = new JMenuItem("Speichern", new ImageIcon("icons/save24.gif"));
-		dateiSpeichern.setAccelerator(KeyStroke.getKeyStroke('S', InputEvent.CTRL_DOWN_MASK));
-		dateiSpeichern.setActionCommand("speichern");
-		dateiSpeichern.addActionListener(listener);
-		
-		dateiBeenden = new JMenuItem("Beenden");
-		dateiBeenden.setAccelerator(KeyStroke.getKeyStroke('B', InputEvent.CTRL_DOWN_MASK));
-		dateiBeenden.setActionCommand("beenden");
-		dateiBeenden.addActionListener(listener);
-		
-		dateiMenue.add(dateiNeu);
-		dateiMenue.add(dateiOeffnen);
-		dateiMenue.addSeparator();
-		dateiMenue.add(dateiSpeichern);
-		dateiMenue.addSeparator();
-		dateiMenue.add(dateiBeenden);
+		dateiMenue.add(neuAct);
+		dateiMenue.add(oeffnenAct);
+		dateiMenue.add(speichernAct);
+		dateiMenue.add(beendenAct);
 		
 		menue.add(dateiMenue);
 		
@@ -86,29 +74,13 @@ public class Menu{
 	public JToolBar symbolleiste() {
 		JToolBar symbolLeiste = new JToolBar();
 		
-		MeinListener listener = new MeinListener();
+		ActionObjekt neuAct = new ActionObjekt("Neu", new ImageIcon("icons/new24.gif"), "Erstellt ein neues Dokument", KeyStroke.getKeyStroke('N'), "neu");
+		ActionObjekt oeffnenAct = new ActionObjekt("Öffnen", new ImageIcon("icons/open24.gif"), "Öffnet ein vorhandenes Dokument", KeyStroke.getKeyStroke('O'), "laden");
+		ActionObjekt speichernAct = new ActionObjekt("Speichern", new ImageIcon("icons/save24.gif"), "Speichert das aktuelle Dokument", KeyStroke.getKeyStroke('S'), "speichern");
 		
-		JButton dateiNeuButton = new JButton();
-		dateiNeuButton.setActionCommand("neu");
-		dateiNeuButton.setIcon(new ImageIcon("icons/new24.gif"));
-		dateiNeuButton.setToolTipText("Erstellt ein neues Dokument");
-		dateiNeuButton.addActionListener(listener);
-		
-		JButton dateiOeffnenButton = new JButton();
-		dateiOeffnenButton.setActionCommand("laden");
-		dateiOeffnenButton.setIcon(new ImageIcon("icons/open24.gif"));
-		dateiOeffnenButton.setToolTipText("Öffnet ein vorhandenes Dokument");
-		dateiOeffnenButton.addActionListener(listener);
-		
-		JButton dateiSpeichernButton = new JButton();
-		dateiSpeichernButton.setActionCommand("speichern");
-		dateiSpeichernButton.setIcon(new ImageIcon("icons/save24.gif"));
-		dateiSpeichernButton.setToolTipText("Speichert das aktuelle Dokument");
-		dateiSpeichernButton.addActionListener(listener);
-		
-		symbolLeiste.add(dateiNeuButton);
-		symbolLeiste.add(dateiOeffnenButton);
-		symbolLeiste.add(dateiSpeichernButton);
+		symbolLeiste.add(neuAct);
+		symbolLeiste.add(oeffnenAct);
+		symbolLeiste.add(speichernAct);
 		
 		return symbolLeiste;
 	}

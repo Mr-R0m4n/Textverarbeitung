@@ -1,17 +1,21 @@
 package textverarbeitung;
 
 import java.awt.event.ActionEvent;
+import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.MessageFormat;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
@@ -45,6 +49,16 @@ public class Menu{
 				dateiSpeichern();
 			if (e.getActionCommand().equals("beenden"))
 				dateiBeenden();
+			if (e.getActionCommand().equals("drucken")) {
+				Object ausloeser = e.getSource();
+				if (ausloeser instanceof JButton) {
+					drucken(false);
+				}
+				if (ausloeser instanceof JMenuItem) {
+					drucken(true);
+				}
+			}
+				
 		}
 	}
 	
@@ -63,13 +77,18 @@ public class Menu{
 		ActionObjekt oeffnenAct = new ActionObjekt("Öffnen", new ImageIcon("icons/open24.gif"), "Öffnet ein vorhandenes Dokument", KeyStroke.getKeyStroke('O'), "laden");
 		ActionObjekt speichernAct = new ActionObjekt("Speichern", new ImageIcon("icons/save24.gif"), "Speichert das aktuelle Dokument", KeyStroke.getKeyStroke('S'), "speichern");
 		ActionObjekt beendenAct = new ActionObjekt("Beenden", null, "Beendet das Programm", null, "beenden");
+		ActionObjekt druckenAct = new ActionObjekt("Drucken", new ImageIcon("icons/print24.gif"), "Druckt das aktuelle Dokument", KeyStroke.getKeyStroke('D'), "drucken");
 		
 		dateiMenue.add(neuAct);
 		dateiMenue.add(oeffnenAct);
 		dateiMenue.addSeparator();
 		dateiMenue.add(speichernAct);
 		dateiMenue.addSeparator();
+		dateiMenue.add(druckenAct);
+		dateiMenue.addSeparator();
 		dateiMenue.add(beendenAct);
+		
+		
 		
 		menue.add(dateiMenue);
 		
@@ -79,9 +98,9 @@ public class Menu{
 	public JToolBar symbolleiste() {
 		JToolBar symbolLeiste = new JToolBar();
 		
-		ActionObjekt neuAct = new ActionObjekt("Neu", new ImageIcon("icons/new24.gif"), "Erstellt ein neues Dokument", KeyStroke.getKeyStroke('N'), "neu");
-		ActionObjekt oeffnenAct = new ActionObjekt("Öffnen", new ImageIcon("icons/open24.gif"), "Öffnet ein vorhandenes Dokument", KeyStroke.getKeyStroke('O'), "laden");
-		ActionObjekt speichernAct = new ActionObjekt("Speichern", new ImageIcon("icons/save24.gif"), "Speichert das aktuelle Dokument", KeyStroke.getKeyStroke('S'), "speichern");
+		ActionObjekt neuAct = new ActionObjekt("Neu", new ImageIcon("icons/new24.gif"), "Erstellt ein neues Dokument", null, "neu");
+		ActionObjekt oeffnenAct = new ActionObjekt("Öffnen", new ImageIcon("icons/open24.gif"), "Öffnet ein vorhandenes Dokument", null, "laden");
+		ActionObjekt speichernAct = new ActionObjekt("Speichern", new ImageIcon("icons/save24.gif"), "Speichert das aktuelle Dokument", null, "speichern");
 		
 		symbolLeiste.add(neuAct);
 		symbolLeiste.add(oeffnenAct);
@@ -125,6 +144,10 @@ public class Menu{
 		symbolLeiste.add(mittigFormat);
 		symbolLeiste.add(rechtsFormat);
 		symbolLeiste.add(blockFormat);
+		symbolLeiste.addSeparator();
+		
+		ActionObjekt druckenAct = new ActionObjekt("Drucken", new ImageIcon("icons/print24.gif"), "Druckt das aktuelle Dokument", null, "drucken");
+		symbolLeiste.add(druckenAct);
 		
 		return symbolLeiste;
 	}
@@ -160,6 +183,18 @@ public class Menu{
 	public void dateiBeenden() {
 		if(this.dialogeReferenz.beendenDialog() == JOptionPane.YES_OPTION)
 		System.exit(0);
+	}
+	
+	public void drucken(boolean dialogZeigen) {
+		try {
+			if (dialogZeigen == true)
+				this.editorReferenz.getEingabeFeld().print();
+			else
+				this.editorReferenz.getEingabeFeld().print(null, null, false, null, null, true);
+		} catch (PrinterException e) {
+			JOptionPane.showMessageDialog(null, "Beim Drucken hat es ein problem gegeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
+		}
+
 	}
 	
 }

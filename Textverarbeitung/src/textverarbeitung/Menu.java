@@ -27,7 +27,7 @@ public class Menu {
 	private Editor editorReferenz;
 	private Dialoge dialogeReferenz;
 	private File datei;
-	private ActionObjekt neuAct, oeffnenAct, speichernAct, speichernUnterAct, beendenAct, druckenAct;
+	private ActionObjekt neuAct, oeffnenAct, speichernAct, speichernUnterAct, beendenAct, druckenAct, webOeffnenAct;
 
 	public class ActionObjekt extends AbstractAction {
 		
@@ -61,6 +61,9 @@ public class Menu {
 					drucken(true);
 				}
 			}
+			if (e.getActionCommand().equals("webladen")) {
+				webLaden();
+			}
 		}
 	}
 	
@@ -74,6 +77,7 @@ public class Menu {
 		speichernUnterAct = new ActionObjekt("Speichern unter", null, "", null, "speichernUnter");
 		beendenAct = new ActionObjekt("Beenden", null, "Beendet das Programm", null, "beenden");
 		druckenAct = new ActionObjekt("Drucken", new ImageIcon("icons/print24.gif"), "Druckt das aktuelle Dokument", KeyStroke.getKeyStroke('D'), "drucken");
+		webOeffnenAct = new ActionObjekt("Webseite öffnen", new ImageIcon("icons/webComponent24.gif"), "Öffnet eine Webseite", null, "webladen");
 	}
 	
 	public JMenuBar menueLeiste() {
@@ -102,6 +106,7 @@ public class Menu {
 		
 		symbolLeiste.add(neuAct);
 		symbolLeiste.add(oeffnenAct);
+		symbolLeiste.add(webOeffnenAct);
 		symbolLeiste.add(speichernAct);
 		symbolLeiste.addSeparator();
 		
@@ -164,7 +169,7 @@ public class Menu {
 				this.editorReferenz.getEingabeFeld().read(new FileReader(datei), null);
 				datei = dateiLokal;
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null, "Beim Laden hat es ein Problem gegeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
+				this.dialogeReferenz.fehlerDialog("Laden");
 			}
 		}
 	}
@@ -178,7 +183,7 @@ public class Menu {
 				OutputStream output = new FileOutputStream(datei);
 				this.editorReferenz.getHtmlFormat().write(output, this.editorReferenz.getEingabeFeld().getDocument(), 0, editorReferenz.getEingabeFeld().getDocument().getLength());
 			} catch (IOException | BadLocationException e) {
-				JOptionPane.showMessageDialog(null, "Beim Speichern hat es ein problem gegeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
+				this.dialogeReferenz.fehlerDialog("Speichern");
 			}
 		}
 	}
@@ -203,7 +208,21 @@ public class Menu {
 			else
 				this.editorReferenz.getEingabeFeld().print(null, null, false, null, null, true);
 		} catch (PrinterException e) {
-			JOptionPane.showMessageDialog(null, "Beim Drucken hat es ein problem gegeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
+			this.dialogeReferenz.fehlerDialog("Drucken");
+		}
+	}
+	
+	public void webLaden() {
+		String adresse;
+		adresse = this.dialogeReferenz.webDialog();
+		if (adresse != null) {
+			this.editorReferenz.getEingabeFeld().setText("");
+			try {
+				this.editorReferenz.getEingabeFeld().setPage(adresse);
+				this.datei = null;
+			} catch (IOException e) {
+				this.dialogeReferenz.fehlerDialog("Laden");
+			}
 		}
 	}
 	

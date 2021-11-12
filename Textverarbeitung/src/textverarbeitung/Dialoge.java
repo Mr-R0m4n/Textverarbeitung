@@ -52,4 +52,12 @@ public class Dialoge {
 	public int beendenDialog() {
 		return JOptionPane.showConfirmDialog(null, "Sind Sie sicher?", "Anwendung schlieﬂen", JOptionPane.YES_NO_OPTION);
 	}
+	
+	public String webDialog() {
+		return JOptionPane.showInputDialog(null, "Bitte geben Sie die URL der Seite ein:");
+	}
+	
+	public void fehlerDialog(String ursache) {
+			JOptionPane.showMessageDialog(null, "Beim " + ursache + " hat es ein problem gegeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
+	}
 }

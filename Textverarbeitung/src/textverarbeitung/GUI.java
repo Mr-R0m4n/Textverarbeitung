@@ -5,7 +5,7 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-public class GUI extends JFrame{
+public class GUI extends JFrame {
 
 	private static final long serialVersionUID = -4505945941683467289L;
 	private Menu menuReferenz;
@@ -30,7 +30,5 @@ public class GUI extends JFrame{
 		editorReferenz.getEingabeFeld().requestFocus();
 		
 		setVisible(true);
-		
 	}
-	
 }

@@ -22,14 +22,14 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit;
 
-public class Menu{
+public class Menu {
 	
 	private Editor editorReferenz;
 	private Dialoge dialogeReferenz;
 	private File datei;
 	private ActionObjekt neuAct, oeffnenAct, speichernAct, speichernUnterAct, beendenAct, druckenAct;
 
-	public class ActionObjekt extends AbstractAction{
+	public class ActionObjekt extends AbstractAction {
 		
 		private static final long serialVersionUID = 599695903271286671L;
 

@@ -1,6 +1,5 @@
 package textverarbeitung;
 
-
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.text.html.HTMLEditorKit;
@@ -29,5 +28,4 @@ public class Editor {
 	public JScrollPane getContainer() {
 		return container;
 	}
-	
 }

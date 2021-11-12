@@ -8,7 +8,7 @@ import javax.swing.filechooser.FileFilter;
 
 public class Dialoge {
 	
-	class Filter extends FileFilter{
+	class Filter extends FileFilter {
 		@Override
 		public String getDescription() {
 			return "HTML-Dateien";
@@ -52,5 +52,4 @@ public class Dialoge {
 	public int beendenDialog() {
 		return JOptionPane.showConfirmDialog(null, "Sind Sie sicher?", "Anwendung schlieﬂen", JOptionPane.YES_NO_OPTION);
 	}
-
 }

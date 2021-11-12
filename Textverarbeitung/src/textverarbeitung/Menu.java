@@ -1,6 +1,8 @@
 package textverarbeitung;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,6 +18,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.text.BadLocationException;
@@ -28,7 +31,17 @@ public class Menu {
 	private Dialoge dialogeReferenz;
 	private File datei;
 	private ActionObjekt neuAct, oeffnenAct, speichernAct, speichernUnterAct, beendenAct, druckenAct, webOeffnenAct;
+	JPopupMenu kontext = new JPopupMenu();
 
+	class KontextMenuListener extends MouseAdapter {
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			super.mouseReleased(e);
+			if(e.isPopupTrigger())
+				kontext.show(e.getComponent(), e.getX(), e.getY());
+		}
+	}
+	
 	public class ActionObjekt extends AbstractAction {
 		
 		private static final long serialVersionUID = 599695903271286671L;
@@ -81,13 +94,13 @@ public class Menu {
 	}
 	
 	public JMenuBar menueLeiste() {
-		JMenuBar menue = new JMenuBar();
-		JMenu dateiMenue;
-
-		dateiMenue = new JMenu("Datei");
+		JMenu dateiOeffnen = new JMenu("Öffnen");
+		dateiOeffnen.add(oeffnenAct);
+		dateiOeffnen.add(webOeffnenAct);
 		
+		JMenu dateiMenue = new JMenu("Datei");
 		dateiMenue.add(neuAct);
-		dateiMenue.add(oeffnenAct);
+		dateiMenue.add(dateiOeffnen);
 		dateiMenue.addSeparator();
 		dateiMenue.add(speichernAct);
 		dateiMenue.add(speichernUnterAct);
@@ -96,6 +109,7 @@ public class Menu {
 		dateiMenue.addSeparator();
 		dateiMenue.add(beendenAct);
 		
+		JMenuBar menue = new JMenuBar();
 		menue.add(dateiMenue);
 		
 		return menue;
@@ -153,6 +167,15 @@ public class Menu {
 		symbolLeiste.add(druckenAct);
 		
 		return symbolLeiste;
+	}
+	
+	public JPopupMenu kontextMenu() {
+		kontext.add(neuAct);
+		kontext.add(oeffnenAct);
+		kontext.add(webOeffnenAct);
+		this.editorReferenz.getEingabeFeld().addMouseListener(new KontextMenuListener());
+		
+		return kontext;
 	}
 	
 	public void dateiNeu() {

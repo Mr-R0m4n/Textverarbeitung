@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -15,6 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledEditorKit;
 
 public class Menu{
 	
@@ -59,11 +62,13 @@ public class Menu{
 		ActionObjekt neuAct = new ActionObjekt("Neu", new ImageIcon("icons/new24.gif"), "Erstellt ein neues Dokument", KeyStroke.getKeyStroke('N'), "neu");
 		ActionObjekt oeffnenAct = new ActionObjekt("Öffnen", new ImageIcon("icons/open24.gif"), "Öffnet ein vorhandenes Dokument", KeyStroke.getKeyStroke('O'), "laden");
 		ActionObjekt speichernAct = new ActionObjekt("Speichern", new ImageIcon("icons/save24.gif"), "Speichert das aktuelle Dokument", KeyStroke.getKeyStroke('S'), "speichern");
-		ActionObjekt beendenAct = new ActionObjekt("Beenden", new ImageIcon(), "Beendet das Programm", KeyStroke.getKeyStroke('B'), "beenden");
+		ActionObjekt beendenAct = new ActionObjekt("Beenden", null, "Beendet das Programm", null, "beenden");
 		
 		dateiMenue.add(neuAct);
 		dateiMenue.add(oeffnenAct);
+		dateiMenue.addSeparator();
 		dateiMenue.add(speichernAct);
+		dateiMenue.addSeparator();
 		dateiMenue.add(beendenAct);
 		
 		menue.add(dateiMenue);
@@ -81,6 +86,45 @@ public class Menu{
 		symbolLeiste.add(neuAct);
 		symbolLeiste.add(oeffnenAct);
 		symbolLeiste.add(speichernAct);
+		symbolLeiste.addSeparator();
+		
+		Action fettFormat = new StyledEditorKit.BoldAction();
+		fettFormat.putValue(Action.SHORT_DESCRIPTION, "Fett formatieren");
+		fettFormat.putValue(Action.LARGE_ICON_KEY, new ImageIcon("icons/bold24.gif"));
+		
+		Action kursivFormat = new StyledEditorKit.ItalicAction();
+		kursivFormat.putValue(Action.SHORT_DESCRIPTION, "Fett formatieren");
+		kursivFormat.putValue(Action.LARGE_ICON_KEY, new ImageIcon("icons/italic24.gif"));
+		
+		Action unterstrichenFormat = new StyledEditorKit.UnderlineAction();
+		unterstrichenFormat.putValue(Action.SHORT_DESCRIPTION, "Fett formatieren");
+		unterstrichenFormat.putValue(Action.LARGE_ICON_KEY, new ImageIcon("icons/underline24.gif"));
+		
+		symbolLeiste.add(fettFormat);
+		symbolLeiste.add(kursivFormat);
+		symbolLeiste.add(unterstrichenFormat);
+		symbolLeiste.addSeparator();
+		
+		Action linksFormat = new StyledEditorKit.AlignmentAction("Linksbündig", StyleConstants.ALIGN_LEFT);
+		linksFormat.putValue(Action.SHORT_DESCRIPTION, "Linksbündig formatieren");
+		linksFormat.putValue(Action.LARGE_ICON_KEY, new ImageIcon("icons/alignLeft24.gif"));
+		
+		Action mittigFormat = new StyledEditorKit.AlignmentAction("Mittig", StyleConstants.ALIGN_CENTER);
+		mittigFormat.putValue(Action.SHORT_DESCRIPTION, "Mittig formatieren");
+		mittigFormat.putValue(Action.LARGE_ICON_KEY, new ImageIcon("icons/alignCenter24.gif"));
+		
+		Action rechtsFormat = new StyledEditorKit.AlignmentAction("Rechtsbündig", StyleConstants.ALIGN_RIGHT);
+		rechtsFormat.putValue(Action.SHORT_DESCRIPTION, "Rechtsbündig formatieren");
+		rechtsFormat.putValue(Action.LARGE_ICON_KEY, new ImageIcon("icons/alignRight24.gif"));
+		
+		Action blockFormat = new StyledEditorKit.AlignmentAction("Blocksatz", StyleConstants.ALIGN_JUSTIFIED);
+		blockFormat.putValue(Action.SHORT_DESCRIPTION, "Blocksatz formatieren");
+		blockFormat.putValue(Action.LARGE_ICON_KEY, new ImageIcon("icons/alignJustify24.gif"));
+		
+		symbolLeiste.add(linksFormat);
+		symbolLeiste.add(mittigFormat);
+		symbolLeiste.add(rechtsFormat);
+		symbolLeiste.add(blockFormat);
 		
 		return symbolLeiste;
 	}

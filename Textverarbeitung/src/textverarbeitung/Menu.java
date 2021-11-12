@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.MessageFormat;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -27,6 +26,8 @@ public class Menu{
 	
 	private Editor editorReferenz;
 	private Dialoge dialogeReferenz;
+	private File datei;
+	private ActionObjekt neuAct, oeffnenAct, speichernAct, speichernUnterAct, beendenAct, druckenAct;
 
 	public class ActionObjekt extends AbstractAction{
 		
@@ -47,6 +48,8 @@ public class Menu{
 				dateiLaden();
 			if (e.getActionCommand().equals("speichern"))
 				dateiSpeichern();
+			if (e.getActionCommand().equals("speichernUnter"))
+				dateiSpeichernUnter();
 			if (e.getActionCommand().equals("beenden"))
 				dateiBeenden();
 			if (e.getActionCommand().equals("drucken")) {
@@ -58,13 +61,19 @@ public class Menu{
 					drucken(true);
 				}
 			}
-				
 		}
 	}
 	
 	public Menu(Editor editorReferenz, Dialoge dialogeReferenz) {
 		this.editorReferenz = editorReferenz;
 		this.dialogeReferenz = dialogeReferenz;
+		
+		neuAct = new ActionObjekt("Neu", new ImageIcon("icons/new24.gif"), "Erstellt ein neues Dokument", KeyStroke.getKeyStroke('N'), "neu");
+		oeffnenAct = new ActionObjekt("Öffnen", new ImageIcon("icons/open24.gif"), "Öffnet ein vorhandenes Dokument", KeyStroke.getKeyStroke('O'), "laden");
+		speichernAct = new ActionObjekt("Speichern", new ImageIcon("icons/save24.gif"), "Speichert das aktuelle Dokument", KeyStroke.getKeyStroke('S'), "speichern");
+		speichernUnterAct = new ActionObjekt("Speichern unter", null, "", null, "speichernUnter");
+		beendenAct = new ActionObjekt("Beenden", null, "Beendet das Programm", null, "beenden");
+		druckenAct = new ActionObjekt("Drucken", new ImageIcon("icons/print24.gif"), "Druckt das aktuelle Dokument", KeyStroke.getKeyStroke('D'), "drucken");
 	}
 	
 	public JMenuBar menueLeiste() {
@@ -73,22 +82,15 @@ public class Menu{
 
 		dateiMenue = new JMenu("Datei");
 		
-		ActionObjekt neuAct = new ActionObjekt("Neu", new ImageIcon("icons/new24.gif"), "Erstellt ein neues Dokument", KeyStroke.getKeyStroke('N'), "neu");
-		ActionObjekt oeffnenAct = new ActionObjekt("Öffnen", new ImageIcon("icons/open24.gif"), "Öffnet ein vorhandenes Dokument", KeyStroke.getKeyStroke('O'), "laden");
-		ActionObjekt speichernAct = new ActionObjekt("Speichern", new ImageIcon("icons/save24.gif"), "Speichert das aktuelle Dokument", KeyStroke.getKeyStroke('S'), "speichern");
-		ActionObjekt beendenAct = new ActionObjekt("Beenden", null, "Beendet das Programm", null, "beenden");
-		ActionObjekt druckenAct = new ActionObjekt("Drucken", new ImageIcon("icons/print24.gif"), "Druckt das aktuelle Dokument", KeyStroke.getKeyStroke('D'), "drucken");
-		
 		dateiMenue.add(neuAct);
 		dateiMenue.add(oeffnenAct);
 		dateiMenue.addSeparator();
 		dateiMenue.add(speichernAct);
+		dateiMenue.add(speichernUnterAct);
 		dateiMenue.addSeparator();
 		dateiMenue.add(druckenAct);
 		dateiMenue.addSeparator();
 		dateiMenue.add(beendenAct);
-		
-		
 		
 		menue.add(dateiMenue);
 		
@@ -97,10 +99,6 @@ public class Menu{
 	
 	public JToolBar symbolleiste() {
 		JToolBar symbolLeiste = new JToolBar();
-		
-		ActionObjekt neuAct = new ActionObjekt("Neu", new ImageIcon("icons/new24.gif"), "Erstellt ein neues Dokument", null, "neu");
-		ActionObjekt oeffnenAct = new ActionObjekt("Öffnen", new ImageIcon("icons/open24.gif"), "Öffnet ein vorhandenes Dokument", null, "laden");
-		ActionObjekt speichernAct = new ActionObjekt("Speichern", new ImageIcon("icons/save24.gif"), "Speichert das aktuelle Dokument", null, "speichern");
 		
 		symbolLeiste.add(neuAct);
 		symbolLeiste.add(oeffnenAct);
@@ -153,15 +151,18 @@ public class Menu{
 	}
 	
 	public void dateiNeu() {
-		if(JOptionPane.showConfirmDialog(null, "Wollen Sie wirklich ein neues Dokument anlegen?", "Neues Dokument", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+		if(JOptionPane.showConfirmDialog(null, "Wollen Sie wirklich ein neues Dokument anlegen?", "Neues Dokument", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			this.editorReferenz.getEingabeFeld().setText("");
+			this.datei = null;
+		}
 	}
 	
 	public void dateiLaden() {
-		File datei = this.dialogeReferenz.oeffnenDialog();
-		if(datei != null) {
+		File dateiLokal = this.dialogeReferenz.oeffnenDialog();
+		if(dateiLokal != null) {
 			try {
 				this.editorReferenz.getEingabeFeld().read(new FileReader(datei), null);
+				datei = dateiLokal;
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Beim Laden hat es ein Problem gegeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
 			}
@@ -169,7 +170,9 @@ public class Menu{
 	}
 	
 	public void dateiSpeichern() {
-		File datei = this.dialogeReferenz.speichernDialog();
+		if (datei == null) {
+			datei = this.dialogeReferenz.speichernDialog();
+		}
 		if(datei != null) {
 			try {
 				OutputStream output = new FileOutputStream(datei);
@@ -177,6 +180,14 @@ public class Menu{
 			} catch (IOException | BadLocationException e) {
 				JOptionPane.showMessageDialog(null, "Beim Speichern hat es ein problem gegeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
 			}
+		}
+	}
+	
+	public void dateiSpeichernUnter() {
+		File dateiLokal = this.dialogeReferenz.oeffnenDialog();
+		if (dateiLokal != null) {
+			dateiLokal = datei;
+			dateiSpeichern();
 		}
 	}
 	
@@ -194,7 +205,6 @@ public class Menu{
 		} catch (PrinterException e) {
 			JOptionPane.showMessageDialog(null, "Beim Drucken hat es ein problem gegeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
 		}
-
 	}
 	
 }
